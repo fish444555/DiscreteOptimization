@@ -1,0 +1,35 @@
+'''
+Created on 2013-10-6
+
+@author: fish
+'''
+
+class dis_opt():
+    def series(self,num):
+        '''
+        Magic Series and Reification
+        The result such as
+                       0    1    2    3    4
+        Occurrences    2    1    2    0    0
+        detail in 4 - 3 - CP 3 - reification element constraint magic series stable marriage (1649)
+        '''
+        import itertools
+        x4 = list(itertools.product(range(num),repeat=num))
+        print_f = False
+        for i in x4:
+            flag = True
+            for j in range(num):            
+                if flag and i.count(j) == i[j]:
+                    continue
+                else:
+                    flag = False
+                    break
+            if flag:
+                print_f = True
+                print i
+        if not print_f:
+            print 'no array match the series'
+    
+tx = dis_opt()
+tx.series(8)
+        
