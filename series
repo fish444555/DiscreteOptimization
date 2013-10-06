@@ -17,16 +17,17 @@ class dis_opt():
         x4 = list(itertools.product(range(num),repeat=num))
         print_f = False
         for i in x4:
-            flag = True
-            for j in range(num):            
-                if flag and i.count(j) == i[j]:
-                    continue
-                else:
-                    flag = False
-                    break
-            if flag:
-                print_f = True
-                print i
+            if i[0] == max(i) and i[-1] == 0:
+                flag = True
+                for j in range(num):            
+                    if flag and i.count(j) == i[j]:
+                        continue
+                    else:
+                        flag = False
+                        break
+                if flag:
+                    print_f = True
+                    print i
         if not print_f:
             print 'no array match the series'
     
