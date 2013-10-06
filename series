@@ -30,6 +30,9 @@ class dis_opt():
         if not print_f:
             print 'no array match the series'
     
+import time
+tstart = time.clock()
 tx = dis_opt()
 tx.series(8)
-        
+tend = time.clock()
+print tend - tstart        
