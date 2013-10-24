@@ -1,0 +1,105 @@
+import pandas as pd
+import numpy as np
+class EightQueens():
+    def find_next(self, matrix, pos, flag=False):
+        n = matrix.last_valid_index()
+        temp = np.array(ty)
+        temp = temp.reshape(1, (n+1)*(n+1))
+        if not flag:#did not consider the position of pos                
+            num = pos[0]*(n+1) + pos[1] + 1
+        else:
+            num = pos[0]*(n+1) + pos[1]
+        while num <= (n+1)*(n+1)-1 and temp[0][num] <> 0:
+            num += 1
+        if num > (n+1)*(n+1)-1:
+            return (-1,-1)
+        else:
+            return (num/(n+1),num%(n+1))
+    def sol(self, matrix, pos):
+        n = matrix.last_valid_index() + 1
+        for k in range(n):  # horizon
+            if matrix.ix[pos[0]][k] == 0:
+                matrix.ix[pos[0]][k] = 1
+        for k in range(n):  # vertical
+            if matrix.ix[k][pos[1]] == 0:
+                matrix.ix[k][pos[1]] = 1
+        temp_i = pos[0]
+        temp_j = pos[1]                
+        while temp_i - 1 in range(n) and temp_j - 1 in range(n):  # dialog1
+            matrix.ix[temp_i - 1][temp_j - 1] = 1
+            temp_i -= 1
+            temp_j -= 1
+        temp_i = pos[0]
+        temp_j = pos[1]
+        while temp_i + 1 in range(n) and temp_j + 1 in range(n):  # dialog1
+            matrix.ix[temp_i + 1][temp_j + 1] = 1
+            temp_i += 1
+            temp_j += 1
+        temp_i = pos[0]
+        temp_j = pos[1]
+        while temp_i - 1 in range(n) and temp_j +1 in range(n):  # dialog2
+            matrix.ix[temp_i - 1][temp_j + 1] = 1
+            temp_i -= 1
+            temp_j += 1
+        temp_i = pos[0]
+        temp_j = pos[1]
+        while temp_i + 1 in range(n) and temp_j - 1 in range(n):  # dialog2
+            matrix.ix[temp_i + 1][temp_j - 1] = 1
+            temp_i += 1
+            temp_j -= 1
+                    
+        matrix.ix[pos[0]][pos[1]] = 2
+        #print matrix
+        #print ' '
+    
+    def pop_op(self, pos_arr):
+        npos = pos_arr.pop()
+        ty = pd.DataFrame([[0]*n]*n)
+        for k in range(len(pos_arr)):
+            self.sol(ty, pos_arr[k])
+        flag = False
+        return npos, flag
+     
+
+
+n = 10
+ty = pd.DataFrame([[0]*n]*n)
+pos_a = []
+npos = []
+flag = True
+result = []
+eq = EightQueens()
+for i in range(n):
+    for j in range(n):
+        pos_a = []        
+        eq.sol(ty,(i,j))
+        pos_a.append((i,j))
+        while(len(pos_a)>0):
+            if flag:
+                pos = eq.find_next(ty, pos_a[-1], flag)
+            else:
+                pos = eq.find_next(ty, npos, flag)
+            if pos <> (-1, -1):
+                pos_a.append(pos)
+                eq.sol(ty,pos)
+                if len(pos_a) >= n*0.5 and pos[0]+1 < n:
+                    for ii in range(pos[0]+1,len(ty)):
+                        if all(ty.ix[ii] == 1):
+                            npos, flag = eq.pop_op(pos_a)
+                            break
+                else:
+                    flag = True
+            else:
+                if len(pos_a) == n:                        
+                    print 'succedd to find the resual'
+                    print ty
+                    print pos_a
+                    result.append(pos_a)
+                    npos, flag = eq.pop_op(pos_a)
+                else:
+#                     npos, flag = pop_op(pos_a)
+                    npos = pos_a.pop()
+                    ty = pd.DataFrame([[0]*n]*n)
+                    for k in range(len(pos_a)):
+                        eq.sol(ty, pos_a[k])
+                    flag = False
