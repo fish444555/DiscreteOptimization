@@ -20,8 +20,8 @@ class Knapsack:
         self.v = []
         self.w = []
         for line in f.readlines():
-            line = line.replace('\n','')
-            line = line.split(' ')
+            line = ','.join(line.split())                          
+            line = line.split(',')
             self.v.append(int(line[0]))
             self.w.append(int(line[1]))
     
