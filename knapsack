@@ -1,0 +1,36 @@
+class Knapsack:
+    def __init__(self, v=0, w=0, path=''):
+        self.v = v
+        self.w = w
+        self.path = path
+    def Opt_Re(self, k, j):
+        if j == 0:
+            return 0
+        elif self.w[j] <= k:
+            return max(self.Opt_Re(k, j-1), self.v[j] + self.Opt_Re(k-self.w[j], j-1))
+        else:
+            return self.Opt_Re(k, j-1)
+    def read_file(self):        
+        '''
+        read the file from txt format, transform them into 
+        the format we can deal with 
+        '''
+        #self.path = path
+        f = open(self.path)
+        self.v = []
+        self.w = []
+        for line in f.readlines():
+            line = line.replace('\n','')
+            line = line.split(' ')
+            self.v.append(int(line[0]))
+            self.w.append(int(line[1]))
+    
+        self.k = self.w[0]
+        self.w[0] = 0
+        self.j = self.v[0]
+        self.v[0] = 0
+
+# test the result
+tx = Knapsack(0,0,'/media/User_Data/fish/coursera/Melbourne/DiscreteOptimization/7_Assignments/knapsack/data/ks_19_0')
+tx.read_file()
+tx.Opt_Re(tx.k, tx.j)
